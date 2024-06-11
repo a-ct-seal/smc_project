@@ -7,8 +7,6 @@ from urllib.parse import urlsplit
 from app import app, forms, db, prediction_model
 from app.models import User
 
-# todo custom error pages
-
 
 @app.route('/')
 @app.route('/home')
