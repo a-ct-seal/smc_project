@@ -58,7 +58,7 @@ def register():
 
 @app.route('/get_recommendations', methods=['GET', 'POST'])
 @login_required
-def get_recommendations():  # todo fix
+def get_recommendations():
     form = forms.PredictionForm()
     form.recommendation.choices = prediction_model.get_prediction(current_user.liked_tracks_ids)
     if form.validate_on_submit():

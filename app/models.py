@@ -8,7 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
 
-MAX_LIKED_TRACKS_SIZE = 100  # todo change to 1000
+MAX_LIKED_TRACKS_SIZE = 1_000
 
 
 class User(UserMixin, db.Model):
