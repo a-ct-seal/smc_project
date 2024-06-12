@@ -1,5 +1,8 @@
 import pandas as pd
 import random
+import warnings
+
+warnings.filterwarnings(action="ignore", category=UserWarning)
 
 
 def _flatten(lst):
@@ -22,8 +25,12 @@ class PredictionModel:
         neighbors = self.knn_model.kneighbors(list_track, return_distance=False, n_neighbors=gen_size)
         indexes = list(set(_flatten(list(map(list, neighbors)))))
         chosen_indexes = random.sample(population=indexes, k=recommend_size)
-        res = pd.DataFrame(self.initial_data.iloc[chosen_indexes])[['artist_name', 'track_name']].values.tolist()
-        return [(chosen_indexes[idx], res[idx][0] + ' - ' + res[idx][1]) for idx in range(len(res))]
+        res = self.get_tracks_by_ids(chosen_indexes)
+        return list(zip(chosen_indexes, res))
 
     def get_random_recommendation(self, size=100):
         return random.sample(population=range(len(self.initial_data)), k=size)
+
+    def get_tracks_by_ids(self, list_ID):
+        res = pd.DataFrame(self.initial_data.iloc[list_ID])[['artist_name', 'track_name']].values.tolist()
+        return [track[0] + ' - ' + track[1] for track in res]

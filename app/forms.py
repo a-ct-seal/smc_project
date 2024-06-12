@@ -35,3 +35,7 @@ class MultiCheckboxField(SelectMultipleField):
 class PredictionForm(FlaskForm):
     recommendation = MultiCheckboxField('Recommendation')  # todo add music
     submit = SubmitField('Submit and regen recommendation')
+
+
+class ClearUserInfoForm(FlaskForm):
+    submit = SubmitField('Clear info about liked tracks')

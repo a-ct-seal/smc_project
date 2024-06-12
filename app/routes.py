@@ -63,6 +63,30 @@ def get_recommendations():
     choices = prediction_model.get_prediction(current_user.liked_tracks_ids)
     form.recommendation.choices = choices
     if form.validate_on_submit():
+        print("HEEEEEEEEEEY")
+        print(form.recommendation.data)
         current_user.update_liked_tracks(form.recommendation.data)
+        db.session.commit()
         return redirect(url_for('get_recommendations'))
+    else:
+        print("NOOOOOOOOO")
     return render_template('get_recommendations.html', title='Recommendations', form=form)
+
+
+@app.route('/clear_user_info', methods=['GET', 'POST'])
+@login_required
+def clear_user_info():
+    form = forms.ClearUserInfoForm()
+    if form.validate_on_submit():
+        current_user.clear_liked_tracks()
+        db.session.commit()
+        return redirect(url_for('home'))
+    return render_template('clear_user_info.html', title='Clear User Info', form=form)
+
+
+@app.route('/get_liked_tracks')
+@login_required
+def get_liked_tracks():
+    tracks = prediction_model.get_tracks_by_ids(current_user.liked_tracks_ids)
+    print(tracks)  # todo delete debug prints
+    return render_template('get_liked_tracks.html', title='Liked Tracks')

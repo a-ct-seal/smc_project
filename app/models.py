@@ -33,6 +33,9 @@ class User(UserMixin, db.Model):
         if len(self.liked_tracks_ids) > MAX_LIKED_TRACKS_SIZE:
             self.liked_tracks_ids = self.liked_tracks_ids[len(self.liked_tracks_ids) - MAX_LIKED_TRACKS_SIZE:]
 
+    def clear_liked_tracks(self):
+        self.liked_tracks_ids = []
+
 
 @login.user_loader
 def load_user(id):
