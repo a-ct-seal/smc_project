@@ -30,6 +30,7 @@ class User(UserMixin, db.Model):
 
     def update_liked_tracks(self, new_liked_tracks):
         self.liked_tracks_ids.extend(new_liked_tracks)
+        self.liked_tracks_ids = list(set(self.liked_tracks_ids))
         if len(self.liked_tracks_ids) > MAX_LIKED_TRACKS_SIZE:
             self.liked_tracks_ids = self.liked_tracks_ids[len(self.liked_tracks_ids) - MAX_LIKED_TRACKS_SIZE:]
 

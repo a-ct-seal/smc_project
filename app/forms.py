@@ -33,7 +33,7 @@ class MultiCheckboxField(SelectMultipleField):
 
 
 class PredictionForm(FlaskForm):
-    recommendation = MultiCheckboxField('Recommendation')  # todo add music
+    recommendation = MultiCheckboxField('Recommendation', coerce=int)  # todo add music
     submit = SubmitField('Submit and regen recommendation')
 
 
