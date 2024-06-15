@@ -8,10 +8,8 @@ from app import app, forms, db, prediction_model
 from app.models import User
 
 
-def _deserialize_cookie(entity):
-    res = entity.split(' ', 1)
-    res[0] = int(res[0])
-    return tuple(res)
+def _deserialize_cookie(list_ID):
+    return list(zip(list_ID, prediction_model.get_tracks_by_ids(list_ID)))
 
 
 @app.route('/')
@@ -68,9 +66,9 @@ def get_recommendations():
     form = forms.PredictionForm()
     if request.method == 'GET':
         form.recommendation.choices = prediction_model.get_prediction(current_user.liked_tracks_ids)
-        session['recommendation'] = '\n'.join(list(map(lambda tup: str(tup[0]) + ' ' + tup[1], form.recommendation.choices)))
+        session['recommendation'] = ' '.join(list(map(lambda tup: str(tup[0]), form.recommendation.choices)))
     elif request.method == 'POST':
-        form.recommendation.choices = list(map(_deserialize_cookie, session.get('recommendation').split('\n')))
+        form.recommendation.choices = _deserialize_cookie(session.get('recommendation').split(' '))
         if form.validate_on_submit():
             current_user.update_liked_tracks(form.recommendation.data)
             db.session.commit()
